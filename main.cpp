@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Memory.h"
 #include "Menu.h"
+#include "Features.h"
 
 void Exit(HANDLE handle)
 {
@@ -11,19 +12,27 @@ void Exit(HANDLE handle)
 
 int main()
 {
-    Menu::options.resize(10);
-    for (unsigned int i = 1; i <= Menu::options.size(); ++i)
+    for (unsigned int i = 0; i < Menu::TOTAL_OPTIONS; ++i)
     {
-        Menu::toggled.push_back(false);
+        Menu::threads[i] = std::thread();
+        Menu::toggled[i] = false;
+        
+        if (Menu::options[i].length() > Menu::largestString)
+            Menu::largestString = Menu::options[i].length();
+    }
+
+    if (Menu::largestString >= Menu::padding)
+    {
+        Menu::padding = Menu::largestString + 2;
     }
 
     const wchar_t* processName = L"ac_client.exe";
-    DWORD pid = Memory::GetPID(processName);
+    Memory::pid = Memory::GetPID(processName);
     std::string option;
 
-    if (pid)
+    if (Memory::pid)
     {
-        std::wcout << "Found process " << processName << " with ID (" << pid << ")\n";
+        std::wcout << "Found process " << processName << " with ID (" << Memory::pid << ")\n";
     }
     else
     {
@@ -32,41 +41,60 @@ int main()
         return 0;
     }
 
-    HANDLE pHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-    if (pHandle != NULL)
+    Memory::pHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, Memory::pid);
+    if (Memory::pHandle != NULL)
     {
         std::wcout << "Process " << processName << " succesfully opened!\n";
     }
     else
     {
         std::wcout << "Error opening " << processName << "!\n";
-        Exit(pHandle);
+        Exit(Memory::pHandle);
     }
 
-    uintptr_t baseAddr = Memory::GetModuleBaseAddress(pid, processName);
-    if (baseAddr)
+    Memory::BaseAddress = Memory::GetModuleBaseAddress(Memory::pid, processName);
+    if (Memory::BaseAddress)
     {
-        std::cout << "Found Module Base Address: " << "0x" << std::hex << baseAddr << std::dec << std::endl;
+        std::cout << "Found Module Base Address: " << "0x" << std::hex << Memory::BaseAddress << std::dec << std::endl;
     }
     else
     {
         std::cout << "Couldn\'t find module base address!\n";
-        Exit(pHandle);
+        Exit(Memory::pHandle);
     }
 
-    Menu::WriteMenu();
     while (true)
     {
+        Menu::WriteMenu();
         std::getline(std::cin, option);
-        if (option == "1")
-        {
 
+        int n;
+        try
+        {
+            n = std::stoi(option);
+        } 
+        catch (std::invalid_argument)
+        {
+            continue;
+        } 
+        catch (std::out_of_range)
+        {
+            continue;
         }
-        else if (option == "2")
-        {
 
+        if (n == 1)
+        {
+            Menu::Select(n);
+        }
+        else if (n == 2)
+        {
+            Menu::Select(n);
+        }
+        else
+        {
+            std::cerr << "\nWrong Input!\n";
         }
     }
     
-    Exit(pHandle);
+    Exit(Memory::pHandle);
 }

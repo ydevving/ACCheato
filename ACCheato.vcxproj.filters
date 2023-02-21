@@ -15,6 +15,9 @@
     <Filter Include="Menu">
       <UniqueIdentifier>{3efb4da5-96b7-4411-a2ea-9e69a0bf9af0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Features">
+      <UniqueIdentifier>{82ab07b7-cba1-4e22-b0a1-2f6b00e9827a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,6 +32,9 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Features.cpp">
+      <Filter>Features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Memory.h">
@@ -39,6 +45,9 @@
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Features.h">
+      <Filter>Features</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

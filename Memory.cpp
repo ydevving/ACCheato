@@ -65,3 +65,15 @@ uintptr_t Memory::FindDMAAddy(HANDLE hProc, uintptr_t ptr, std::vector<unsigned 
 
     return ptr;
 }
+
+void Memory::PatchEx(HANDLE hProcess, void* dst, void* buffer, size_t size)
+{
+    DWORD oldProtect;
+    VirtualProtectEx(hProcess, dst, size, PROCESS_VM_OPERATION, &oldProtect);
+    WriteProcessMemory(hProcess, dst, buffer, size, NULL);
+    VirtualProtectEx(hProcess, dst, size, oldProtect, &oldProtect);
+}
+
+HANDLE Memory::pHandle = NULL;
+uintptr_t Memory::BaseAddress = 0;
+DWORD Memory::pid = 0;

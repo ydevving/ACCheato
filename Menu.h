@@ -1,15 +1,17 @@
 #pragma once
 
-#include "pch.h"
-
 class Menu
 {
 public:
 	static void WriteMenu();
-	static bool Select(int numberChoice, bool on_off);
+	static void Select(const int numberChoice);
 	static char IsSelected(const int numberChoice);
 public:
-	static const wchar_t* ascii;
-	static std::vector<std::string> options;
-	static std::vector<bool> toggled;
+	static const int TOTAL_OPTIONS = 2;
+	static unsigned int largestString;
+	static unsigned int padding;
+	static const char* ascii;
+	static std::string options[TOTAL_OPTIONS];
+	static bool toggled[TOTAL_OPTIONS];
+	static std::thread threads[TOTAL_OPTIONS];
 };

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Features.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -38,6 +39,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Features.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="pch.h" />
