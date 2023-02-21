@@ -4,8 +4,8 @@ class Menu
 {
 public:
 	static void WriteMenu();
-	static void Select(const int numberChoice);
-	static char IsSelected(const int numberChoice);
+	static void Select(const unsigned int numberChoice);
+	static char IsSelected(const unsigned int numberChoice);
 public:
 	static const int TOTAL_OPTIONS = 2;
 	static unsigned int largestString;

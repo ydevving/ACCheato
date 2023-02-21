@@ -31,7 +31,7 @@ void Menu::WriteMenu()
 	std::cout << "\n\nOption -> ";
 }
 
-void Menu::Select(const int numberChoice)
+void Menu::Select(const unsigned int numberChoice)
 {
 	bool on_off = false;
 	if (!Menu::IsSelected(numberChoice))
@@ -45,7 +45,8 @@ void Menu::Select(const int numberChoice)
 		switch (numberChoice)
 		{
 		case 1:
-			Menu::threads[numberChoice - 1] = std::thread(Features::RandomiseHP, 101, 999);
+			Menu::threads[numberChoice - 1] = std::thread(Features::RandomiseHP, &Menu::toggled[numberChoice - 1]);
+			Menu::threads[numberChoice - 1].detach();
 			break;
 		case 2:
 			Menu::threads[numberChoice - 1] = std::thread(Features::UnlimitedAmmo);
@@ -57,10 +58,11 @@ void Menu::Select(const int numberChoice)
 	else
 	{
 		std::cout << "Off [ Doesnt work ]\n";
+		
 	}
 }
 
-char Menu::IsSelected(const int numberChoice)
+char Menu::IsSelected(const unsigned int numberChoice)
 {
 	if (Menu::TOTAL_OPTIONS < numberChoice)
 		return -1;

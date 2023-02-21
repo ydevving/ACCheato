@@ -69,9 +69,17 @@ uintptr_t Memory::FindDMAAddy(HANDLE hProc, uintptr_t ptr, std::vector<unsigned 
 void Memory::PatchEx(HANDLE hProcess, void* dst, void* buffer, size_t size)
 {
     DWORD oldProtect;
-    VirtualProtectEx(hProcess, dst, size, PROCESS_VM_OPERATION, &oldProtect);
+    VirtualProtectEx(hProcess, dst, size, PAGE_EXECUTE_READWRITE, &oldProtect);
     WriteProcessMemory(hProcess, dst, buffer, size, NULL);
     VirtualProtectEx(hProcess, dst, size, oldProtect, &oldProtect);
+}
+
+void Memory::NopEx(HANDLE hProcess, void* dst, size_t size)
+{
+    BYTE* nopArray = new BYTE[size];
+    memset(nopArray, 0x90, size);
+
+    PatchEx(hProcess, dst, nopArray, size);
 }
 
 HANDLE Memory::pHandle = NULL;

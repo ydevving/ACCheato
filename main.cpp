@@ -14,7 +14,6 @@ int main()
 {
     for (unsigned int i = 0; i < Menu::TOTAL_OPTIONS; ++i)
     {
-        Menu::threads[i] = std::thread();
         Menu::toggled[i] = false;
         
         if (Menu::options[i].length() > Menu::largestString)
