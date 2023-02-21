@@ -82,6 +82,14 @@ void Memory::NopEx(HANDLE hProcess, void* dst, size_t size)
     PatchEx(hProcess, dst, nopArray, size);
 }
 
+void Memory::ReadEx(HANDLE hProcess, void* dst, void* buffer, size_t size)
+{
+    DWORD oldProtect;
+    VirtualProtectEx(hProcess, dst, size, PAGE_EXECUTE_READWRITE, &oldProtect);
+    ReadProcessMemory(hProcess, dst, buffer, size, NULL);
+    VirtualProtectEx(hProcess, dst, size, oldProtect, &oldProtect);
+}
+
 HANDLE Memory::pHandle = NULL;
 uintptr_t Memory::BaseAddress = 0;
 DWORD Memory::pid = 0;

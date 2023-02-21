@@ -3,6 +3,6 @@
 class Features
 {
 public:
-	static void RandomiseHP(bool state);
-	static void UnlimitedAmmo();
+	static void RandomiseHP(unsigned int idx);
+	static void UnlimitedAmmo(unsigned int idx);
 };

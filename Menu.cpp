@@ -37,28 +37,25 @@ void Menu::Select(const unsigned int numberChoice)
 	if (!Menu::IsSelected(numberChoice))
 		on_off = true;
 
-	Menu::toggled[numberChoice - 1] = on_off;
+	unsigned int idx = numberChoice - 1;
+
+	Menu::toggled[idx] = on_off;
 
 	if (on_off == true)
 	{
-		std::cout << "On!\n";
 		switch (numberChoice)
 		{
 		case 1:
-			Menu::threads[numberChoice - 1] = std::thread(Features::RandomiseHP, &Menu::toggled[numberChoice - 1]);
-			Menu::threads[numberChoice - 1].detach();
+			Menu::threads[idx] = std::thread(Features::RandomiseHP, idx);
+			Menu::threads[idx].detach();
 			break;
 		case 2:
-			Menu::threads[numberChoice - 1] = std::thread(Features::UnlimitedAmmo);
+			Menu::threads[idx] = std::thread(Features::UnlimitedAmmo, idx);
+			Menu::threads[idx].detach();
 			break;
 		default:
 			break;
 		}
-	}
-	else
-	{
-		std::cout << "Off [ Doesnt work ]\n";
-		
 	}
 }
 
