@@ -12,7 +12,7 @@ namespace Colors
 
 void Menu::WriteMenu()
 {
-	//system("cls");
+	system("cls");
 	std::cout << Menu::ascii << "\n\n";
 
 	for (size_t i = 0; i < Menu::TOTAL_OPTIONS; ++i)
@@ -28,7 +28,7 @@ void Menu::WriteMenu()
 		}
 	}
 
-	std::cout << "\n\nOption -> ";
+	std::cout << "\n\n";
 }
 
 void Menu::Select(const unsigned int numberChoice)
@@ -46,17 +46,22 @@ void Menu::Select(const unsigned int numberChoice)
 		switch (numberChoice)
 		{
 		case 1:
-			Menu::threads[idx] = std::thread(Features::RandomiseHP, idx);
+			Menu::threads[idx] = std::thread(Features::UnlimitedHP, idx);
 			Menu::threads[idx].detach();
 			break;
 		case 2:
 			Menu::threads[idx] = std::thread(Features::UnlimitedAmmo, idx);
 			Menu::threads[idx].detach();
 			break;
+		case 3:
+			Menu::threads[idx] = std::thread(Features::NoRecoil, idx);
+			Menu::threads[idx].detach();
 		default:
 			break;
 		}
 	}
+
+	Menu::WriteMenu();
 }
 
 char Menu::IsSelected(const unsigned int numberChoice)
@@ -77,8 +82,9 @@ const char* Menu::ascii = R"(
 )";
 
 std::string Menu::options[Menu::TOTAL_OPTIONS] = {
-	"1 | Randomise Health (101-999)",
+	"1 | Unlimited Health",
 	"2 | Unlimited Ammo",
+	"3 | No Recoil",
 };
 
 bool Menu::toggled[Menu::TOTAL_OPTIONS] = {};

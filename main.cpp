@@ -5,7 +5,9 @@
 
 void Exit(HANDLE handle)
 {
-    CloseHandle(handle);
+    if (handle)
+        CloseHandle(handle);
+
     std::cin.get();
     exit(0);
 }
@@ -62,36 +64,27 @@ int main()
         Exit(Memory::pHandle);
     }
 
-    while (true)
+    DWORD dwExit = 0;
+
+    Menu::WriteMenu();
+
+    while (GetExitCodeProcess(Memory::pHandle, &dwExit) && dwExit == STILL_ACTIVE)
     {
-        Menu::WriteMenu();
-        std::getline(std::cin, option);
-
-        int n;
-        try
+        if (GetAsyncKeyState(VK_NUMPAD1) & 1)
         {
-            n = std::stoi(option);
-        } 
-        catch (std::invalid_argument)
-        {
-            continue;
-        } 
-        catch (std::out_of_range)
-        {
-            continue;
+            Menu::Select(1);
         }
-
-        if (n == 1)
+        else if (GetAsyncKeyState(VK_NUMPAD2) & 1)
         {
-            Menu::Select(n);
+            Menu::Select(2);
         }
-        else if (n == 2)
+        else if (GetAsyncKeyState(VK_NUMPAD3) & 1)
         {
-            Menu::Select(n);
+            Menu::Select(3);
         }
-        else
+        else if (GetAsyncKeyState(VK_NUMPAD0) & 1)
         {
-            std::cerr << "\nWrong Input!\n";
+            break;
         }
     }
     

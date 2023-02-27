@@ -7,7 +7,7 @@ public:
 	static void Select(const unsigned int numberChoice);
 	static char IsSelected(const unsigned int numberChoice);
 public:
-	static const int TOTAL_OPTIONS = 2;
+	static const int TOTAL_OPTIONS = 3;
 	static unsigned int largestString;
 	static unsigned int padding;
 	static const char* ascii;
